@@ -1,0 +1,372 @@
+/* Palette Illusion (Dark Elegant Theme) */
+:root {
+  --illusion-50: #fdedf2;
+  --illusion-100: #facfe0;
+  --illusion-200: #f6a0c4;
+  --illusion-300: #f487b8;
+  --illusion-400: #f261a8;
+  --illusion-500: #e43493;
+  --illusion-600: #ba2878;
+  --illusion-700: #8f1d5b;
+  --illusion-800: #65113f;
+  --illusion-900: #3c0724;
+  --illusion-950: #270315;
+
+  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Lato', sans-serif;
+
+  --bg-dark: var(--illusion-950);
+  --text-light: var(--illusion-50);
+  --accent: var(--illusion-400);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  overflow-x: hidden;
+  background: linear-gradient(135deg, var(--illusion-950) 0%, var(--illusion-900) 50%, var(--illusion-800) 100%);
+  background-attachment: fixed;
+}
+
+/* --- NAV --- */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 1.5rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  box-sizing: border-box;
+  background: rgba(39, 3, 21, 0.6);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(228, 52, 147, 0.1);
+}
+
+.logo {
+  font-family: var(--font-serif);
+  font-size: 6rem;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: var(--illusion-300);
+}
+
+.links a {
+  color: var(--text-light);
+  text-decoration: none;
+  margin-left: 3rem;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: color 0.3s;
+}
+
+.links a:hover {
+  color: var(--accent);
+}
+
+/* --- HERO --- */
+#hero {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+#canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
+  z-index: 10;
+  max-width: 500px;
+  text-align: center;
+}
+
+.about-content {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--illusion-300);
+}
+
+p {
+  font-size: 1.1rem;
+  color: var(--illusion-100);
+  margin-bottom: 2rem;
+  font-weight: 300;
+}
+
+/* Color Control Flotante */
+.color-control {
+  position: absolute;
+  bottom: 2rem;
+  right: 4rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(39, 3, 21, 0.6);
+  backdrop-filter: blur(5px);
+  padding: 0.8rem 1.2rem;
+  border-radius: 50px;
+  border: 1px solid var(--illusion-800);
+  z-index: 20;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.color-control label {
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  color: var(--illusion-200);
+}
+
+.picker-wrapper {
+  overflow: hidden;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  border: 2px solid white;
+}
+
+input[type="color"] {
+  width: 150%;
+  height: 150%;
+  margin: -25%;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  background: var(--illusion-600);
+  color: white;
+  text-decoration: none;
+  border-radius: 0;
+  font-family: var(--font-serif);
+  letter-spacing: 1px;
+  transition: background 0.3s;
+}
+
+.cta-button:hover {
+  background: var(--illusion-500);
+}
+
+/* --- SECTIONS --- */
+section {
+  padding: 6rem 10%;
+  border-top: 1px solid var(--illusion-900);
+}
+
+h2 {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  text-align: center;
+  font-weight: 400;
+  color: var(--illusion-100);
+}
+
+/* --- Service Grid - Perfect Horizontal Alignment --- */
+.service-grid {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  /* Ensure all cards stretch to same baseline */
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 2rem;
+  border: 1px solid var(--illusion-800);
+  transition: transform 0.3s;
+
+  /* Fixed dimensions */
+  width: 320px;
+  height: 280px;
+  /* Explicit fixed height for perfect alignment */
+  flex: 0 0 320px;
+  /* Explicit flex-basis matching width */
+
+  /* Force top alignment */
+  align-self: flex-start;
+  margin: 0;
+
+  /* Internal layout */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: var(--illusion-600);
+}
+
+.card h3 {
+  font-family: var(--font-serif);
+  color: var(--accent);
+  margin: 0 0 1rem 0;
+}
+
+.card p {
+  margin: 0 0 1rem 0;
+}
+
+.price {
+  display: block;
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.subtitle {
+  text-align: center;
+  margin-top: -2rem;
+  margin-bottom: 3rem;
+  opacity: 0.7;
+}
+
+.calendar-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 2rem;
+  border-radius: 1rem;
+}
+
+/* --- GALLERY CAROUSEL --- */
+.gallery {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-dark);
+  /* Ensure it blends in */
+}
+
+.cards {
+  position: absolute;
+  width: 48vw;
+  height: 48vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cards li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 48vw;
+  height: 48vh;
+  text-align: center;
+  line-height: 48vh;
+  font-size: 2rem;
+  position: absolute;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  top: 0;
+  left: 0;
+  border-radius: 0.8rem;
+  border: 1px solid var(--illusion-700);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.actions {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  z-index: 100;
+}
+
+.actions button {
+  background: rgba(228, 52, 147, 0.8);
+  border: 1px solid var(--illusion-600);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: var(--font-serif);
+  backdrop-filter: blur(5px);
+  transition: all 0.3s;
+}
+
+.actions button:hover {
+  background: var(--illusion-500);
+  transform: scale(1.05);
+}
+
+.drag-proxy {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Footer */
+footer {
+  padding: 4rem 10%;
+  text-align: center;
+  border-top: 1px solid var(--illusion-800);
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.social-links a {
+  color: var(--illusion-300);
+  transition: color 0.3s, transform 0.3s;
+}
+
+.social-links a:hover {
+  color: var(--accent);
+  transform: scale(1.1);
+}
