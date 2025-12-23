@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="/vite.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking - Glaze Studio</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap"
+        rel="stylesheet">
+
+    <!-- Reuse existing styles -->
+    <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body class="booking-page">
+
+    <!-- Navegación -->
+    <nav>
+        <div class="logo">GLAZE STUDIO</div>
+        <div class="links">
+            <a href="/index.html">Home</a>
+            <a href="/index.html#services">Services</a>
+            <a href="/booking.html" class="active">Booking</a>
+            <a href="/index.html#contact">Contact</a>
+        </div>
+    </nav>
+
+    <main style="padding-top: 120px; min-height: 100vh;">
+        <section class="booking-container">
+            <h2>Select a Date</h2>
+            <p class="subtitle">Choose your preferred day to see available slots.</p>
+
+            <!-- Calendar Controls -->
+            <div class="calendar-controls">
+                <button id="prevWeek" class="control-btn">&lt; Prev Week</button>
+                <span id="currentMonthYear">December 2025</span>
+                <button id="nextWeek" class="control-btn">Next Week &gt;</button>
+            </div>
+
+            <!-- Weekly Carousel -->
+            <div class="week-carousel">
+                <!-- Days will be injected here by JS -->
+                <!-- Example Structure:
+              <div class="day-card" data-date="2025-12-24">
+                  <span class="day-name">Tue</span>
+                  <span class="day-number">24</span>
+              </div>
+              -->
+            </div>
+
+            <!-- Time Slots Section (Hidden by default) -->
+            <div id="time-slots-container" class="time-slots-container hidden">
+                <h3>Available Hours for <span id="selectedDateDisplay">...</span></h3>
+                <div class="slots-grid" id="slotsGrid">
+                    <!-- Slots injected here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Glaze Studio. All rights reserved.</p>
+    </footer>
+
+    <script type="module" src="/src/booking.js"></script>
+
+</body>
+
+</html>
