@@ -9,3 +9,5 @@ class Slot(Base):
     date = Column(String, index=True)  # YYYY-MM-DD
     time = Column(String, index=True)  # HH:MM
     is_booked = Column(Boolean, default=False)
+    client_name = Column(String, nullable=True)
+    client_email = Column(String, nullable=True)

@@ -122,23 +122,85 @@ async function showTimeSlots(date) {
     timeSlotsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function handleBookingClick(date, slot) {
-    if (!confirm(`Book appointment for ${slot.time}?`)) return;
+// Modal Elements
+const bookingModal = document.getElementById('booking-modal');
+const closeModalBtn = document.querySelector('.close-modal');
+const bookingForm = document.getElementById('booking-form');
+const modalDateSpan = document.getElementById('modal-date');
+const modalTimeSpan = document.getElementById('modal-time');
+const bookingStatus = document.getElementById('booking-status');
+const clientNameInput = document.getElementById('clientName');
+const clientEmailInput = document.getElementById('clientEmail');
 
-    // 1. Mark as booked in DB
-    fetch(`${API_URL}/book/${slot.id}`, { method: 'POST' })
-        .then(res => {
-            if (res.ok) {
-                // 2. Open Google Calendar Link
-                const calendarUrl = generateGoogleCalendarLink(date, slot.time);
-                window.open(calendarUrl, '_blank');
-                alert('Booking confirmed! Opening Google Calendar...');
-                showTimeSlots(date); // Refresh UI
-            } else {
-                alert('Failed to book. It might be taken.');
-            }
-        });
+let pendingBooking = {
+    date: null,
+    slot: null
+};
+
+function handleBookingClick(date, slot) {
+    // Open Modal instead of direct confirm
+    pendingBooking = { date, slot };
+
+    modalDateSpan.textContent = date.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long' });
+    modalTimeSpan.textContent = slot.time;
+    bookingStatus.textContent = '';
+    clientNameInput.value = '';
+    clientEmailInput.value = '';
+
+    bookingModal.classList.remove('hidden');
 }
+
+// Modal Close Logic
+closeModalBtn.addEventListener('click', () => bookingModal.classList.add('hidden'));
+window.addEventListener('click', (e) => {
+    if (e.target === bookingModal) bookingModal.classList.add('hidden');
+});
+
+// Form Submission
+bookingForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = clientNameInput.value;
+    const email = clientEmailInput.value;
+
+    if (!pendingBooking.slot || !name || !email) return;
+
+    bookingStatus.textContent = 'Processing...';
+    bookingStatus.style.color = 'var(--text-light)';
+
+    try {
+        const res = await fetch(`${API_URL}/book/${pendingBooking.slot.id}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                client_name: name,
+                client_email: email
+            })
+        });
+
+        if (res.ok) {
+            bookingStatus.textContent = 'Confirmed! Opening Calendar...';
+            bookingStatus.style.color = '#4ade80';
+
+            // Open Calendar Link
+            const calendarUrl = generateGoogleCalendarLink(pendingBooking.date, pendingBooking.slot.time);
+            window.open(calendarUrl, '_blank');
+
+            // Close and Refresh
+            setTimeout(() => {
+                bookingModal.classList.add('hidden');
+                showTimeSlots(pendingBooking.date);
+            }, 1000);
+        } else {
+            const data = await res.json();
+            bookingStatus.textContent = 'Error: ' + data.detail;
+            bookingStatus.style.color = '#f87171';
+        }
+    } catch (error) {
+        console.error(error);
+        bookingStatus.textContent = 'Network Error.';
+        bookingStatus.style.color = '#f87171';
+    }
+});
 
 function generateGoogleCalendarLink(dateObj, timeStr) {
     // Construct Start/End Time in ISO format
@@ -160,5 +222,4 @@ function generateGoogleCalendarLink(dateObj, timeStr) {
     return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${fmt(start)}/${fmt(end)}&details=${details}&location=${location}`;
 }
 
-// Init function remains same
 init();

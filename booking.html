@@ -61,6 +61,30 @@
                     <!-- Slots injected here -->
                 </div>
             </div>
+
+            <!-- Booking Form Modal (Hidden by default) -->
+            <div id="booking-modal" class="modal hidden">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h3>Complete your Booking</h3>
+                    <p>Date: <span id="modal-date"></span></p>
+                    <p>Time: <span id="modal-time"></span></p>
+
+                    <form id="booking-form">
+                        <div class="form-group">
+                            <label for="clientName">Your Name</label>
+                            <input type="text" id="clientName" name="clientName" placeholder="Full Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="clientEmail">Email Address</label>
+                            <input type="email" id="clientEmail" name="clientEmail" placeholder="you@example.com"
+                                required>
+                        </div>
+                        <button type="submit" class="cta-button">Confirm Booking</button>
+                    </form>
+                    <p id="booking-status" class="status-message"></p>
+                </div>
+            </div>
         </section>
     </main>
 

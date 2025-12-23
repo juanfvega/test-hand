@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Glaze Studio</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+        }
+
+        .login-card {
+            background: rgba(20, 20, 20, 0.95);
+            border: 1px solid var(--illusion-600);
+            padding: 3rem;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(228, 52, 147, 0.1);
+        }
+
+        .login-card h2 {
+            margin-bottom: 2rem;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--illusion-300);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--illusion-600);
+            border-radius: 8px;
+            color: #fff;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-500);
+            box-shadow: 0 0 10px rgba(228, 52, 147, 0.2);
+        }
+
+        .error-message {
+            color: #ff4d4d;
+            margin-top: 1rem;
+            min-height: 1.2rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">GLAZE ADMIN</div>
+        <div class="links">
+            <a href="/index.html">Home</a>
+        </div>
+    </nav>
+
+    <div class="login-container">
+        <div class="login-card">
+            <h2>Admin Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="cta-button" style="width: 100%; justify-content: center;">Login</button>
+                <div id="errorMsg" class="error-message"></div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="/src/login.js"></script>
+</body>
+
+</html>

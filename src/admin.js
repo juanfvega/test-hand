@@ -64,16 +64,65 @@ addSlotsBtn.addEventListener('click', async () => {
     statusMsg.style.color = "green";
     loadSlots();
 });
+const agendaList = document.getElementById('agendaList');
+let lastFetchedData = null;
 
 async function loadSlots() {
     try {
         const res = await fetch(`${API_URL}/slots/`); // Get all for admin
         const data = await res.json();
-        renderSlots(data);
+
+        // Check if data changed to avoid re-rendering and flickering
+        if (JSON.stringify(data) !== JSON.stringify(lastFetchedData)) {
+            lastFetchedData = data;
+            renderSlots(data);
+            renderAgenda(data);
+        }
     } catch (e) {
-        slotsList.textContent = "Failed to load slots. Is backend running?";
+        console.error("Failed to load slots", e);
     }
 }
+
+// WebSocket Setup with Auto-Reconnect
+let ws;
+
+function connectWebSocket() {
+    // Dynamic host to match current browser context (localhost vs 127.0.0.1)
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const host = window.location.hostname;
+    const port = '8000'; // Backend port
+    const wsUrl = `${protocol}//${host}:${port}/ws`;
+
+    console.log("Connecting to WS:", wsUrl);
+    const ws = new WebSocket(wsUrl);
+
+    ws.onopen = () => {
+        console.log("Connected to WebSocket");
+    };
+
+    ws.onmessage = (event) => {
+        // Now expecting JSON
+        try {
+            const msg = JSON.parse(event.data);
+            if (msg.type === "refresh") {
+                console.log("Update received.");
+                loadSlots();
+            }
+        } catch (e) { /* Ignore non-json if any */ }
+    };
+
+    ws.onclose = () => {
+        console.log("Disconnected. Reconnecting in 3s...");
+        setTimeout(connectWebSocket, 3000);
+    };
+
+    ws.onerror = (err) => {
+        console.error("WS Error:", err);
+        ws.close();
+    };
+}
+
+connectWebSocket();
 
 function renderSlots(slots) {
     slotsList.innerHTML = '';
@@ -81,12 +130,16 @@ function renderSlots(slots) {
     slots.sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
 
     slots.forEach(slot => {
+        // Only showing OPEN slots in the top list? 
+        // User asked to see availabilty to delete. 
+        // Let's keep showing all, but maybe highlight booked better.
+
         const div = document.createElement('div');
         div.className = 'slot-item';
         div.innerHTML = `
             <div>
                 <strong>${slot.date}</strong> - ${slot.time} 
-                ${slot.is_booked ? '<span style="color:orange">(Booked)</span>' : '<span style="color:green">(Open)</span>'}
+                ${slot.is_booked ? '<span style="color:orange; font-weight:bold;">(Booked)</span>' : '<span style="color:green">(Open)</span>'}
             </div>
             <button class="delete-btn" data-id="${slot.id}">Delete</button>
         `;

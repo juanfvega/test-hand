@@ -3,6 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
+    <script>
+        if (!sessionStorage.getItem('admin_token')) {
+            window.location.href = '/login.html';
+        }
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Manage Availability</title>
     <!-- Reuse main styles -->
@@ -69,6 +74,8 @@
         <div class="logo">GLAZE ADMIN</div>
         <div class="links">
             <a href="/index.html">Home</a>
+            <a href="/admin.html" class="active">Manage Slots</a>
+            <a href="/agenda.html">Agenda</a>
             <a href="/booking.html">Booking</a>
         </div>
     </nav>

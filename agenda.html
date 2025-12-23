@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <script>
+        if (!sessionStorage.getItem('admin_token')) {
+            window.location.href = '/login.html';
+        }
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda - Glaze Studio</title>
+    <!-- Reuse main styles -->
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .agenda-container {
+            max-width: 1000px;
+            margin: 100px auto;
+            padding: 2rem;
+            background: rgba(39, 3, 21, 0.8);
+            border-radius: 20px;
+            border: 1px solid var(--illusion-600);
+        }
+
+        .agenda-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .booking-card {
+            background: rgba(228, 52, 147, 0.1);
+            border-left: 4px solid var(--illusion-400);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 0 8px 8px 0;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .booking-time {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .booking-client div {
+            margin-bottom: 0.2rem;
+        }
+
+        .client-label {
+            color: var(--illusion-300);
+            font-size: 0.85rem;
+        }
+
+        /* Toast Notification */
+        #notification-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .toast-card {
+            background: rgba(20, 20, 20, 0.95);
+            border: 1px solid var(--illusion-500);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 300px;
+            animation: slideIn 0.3s ease-out;
+            margin-top: 10px;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .toast-header {
+            display: flex;
+            justify-content: space-between;
+            color: var(--illusion-300);
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .toast-body h4 {
+            margin: 0 0 0.5rem 0;
+            color: white;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">GLAZE ADMIN</div>
+        <div class="links">
+            <a href="/index.html">Home</a>
+            <a href="/admin.html">Manage Slots</a>
+            <a href="/agenda.html" class="active">Agenda</a>
+            <a href="/booking.html">Booking</a>
+        </div>
+    </nav>
+
+    <div class="agenda-container">
+        <div class="agenda-header">
+            <h2>Confirmed Bookings</h2>
+            <button id="refreshBtn" class="cta-button" style="padding:0.5rem 1rem; font-size:0.9rem;">Refresh</button>
+        </div>
+
+        <div id="agendaList">
+            <!-- Booked items injected here -->
+            <p style="color:#888">Loading bookings from DB...</p>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification-container"></div>
+
+    <script type="module" src="/src/agenda.js"></script>
+</body>
+
+</html>
