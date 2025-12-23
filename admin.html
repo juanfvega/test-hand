@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Manage Availability</title>
+    <!-- Reuse main styles -->
+    <link rel="stylesheet" href="/src/style.css">
+    <style>
+        .admin-container {
+            max-width: 800px;
+            margin: 100px auto;
+            padding: 2rem;
+            background: rgba(39, 3, 21, 0.8);
+            border-radius: 20px;
+            border: 1px solid var(--illusion-600);
+        }
+
+        .form-section {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        input[type="date"],
+        input[type="time"] {
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid var(--illusion-500);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .slot-list {
+            margin-top: 2rem;
+        }
+
+        .slot-item {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            align-items: center;
+        }
+
+        .delete-btn {
+            background: #ff4d4d;
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        h2 {
+            color: var(--illusion-100);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">GLAZE ADMIN</div>
+        <div class="links">
+            <a href="/index.html">Home</a>
+            <a href="/booking.html">Booking</a>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <h2>Add Availability</h2>
+        <div class="form-section">
+            <input type="date" id="dateInput">
+            <input type="time" id="startTime" value="10:00">
+            <span style="color:white">to</span>
+            <input type="time" id="endTime" value="18:00">
+            <button id="addSlotsBtn" class="cta-button">Generate Slots (Hourly)</button>
+        </div>
+        <p id="statusMsg"></p>
+
+        <hr style="border-color: var(--illusion-800); margin: 2rem 0;">
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2>Current Slots</h2>
+            <button id="deleteAllBtn" class="delete-btn"
+                style="background:var(--illusion-600); border: 1px solid var(--illusion-400);">Delete All
+                Availability</button>
+        </div>
+        <div id="slotsList" class="slot-list">
+            <!-- Items injected by JS -->
+            <p style="color:#888">Loading...</p>
+        </div>
+    </div>
+
+    <script type="module" src="/src/admin.js"></script>
+</body>
+
+</html>

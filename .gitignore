@@ -1,0 +1,14 @@
+
+node_modules
+dist
+.env
+service-account.json
+.DS_Store
+
+# Python / Backend
+__pycache__/
+*.py[cod]
+*$py.class
+backend/venv/
+*.db
+*.sqlite3

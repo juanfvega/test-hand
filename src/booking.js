@@ -82,35 +82,83 @@ function selectDate(date) {
     showTimeSlots(date);
 }
 
-function showTimeSlots(date) {
+const API_URL = 'http://localhost:8000';
+
+async function showTimeSlots(date) {
     timeSlotsContainer.classList.remove('hidden');
     selectedDateDisplay.textContent = date.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long' });
 
-    // Mock Slots logic
-    slotsGrid.innerHTML = '';
-    const slots = generateMockSlots();
+    slotsGrid.innerHTML = '<p style="color:white">Loading slots...</p>';
 
-    slots.forEach(time => {
-        const chip = document.createElement('button');
-        chip.className = 'time-slot';
-        chip.textContent = time;
-        chip.addEventListener('click', () => {
-            alert(`Booking requested for ${date.toDateString()} at ${time}`);
+    try {
+        // Format date YYYY-MM-DD
+        const dateStr = date.toISOString().split('T')[0];
+        const res = await fetch(`${API_URL}/slots/${dateStr}`);
+        const slots = await res.json();
+
+        slotsGrid.innerHTML = '';
+
+        if (slots.length === 0) {
+            slotsGrid.innerHTML = '<p style="color:var(--illusion-300)">No availability for this day.</p>';
+            return;
+        }
+
+        slots.forEach(slot => {
+            if (slot.is_booked) return; // Skip booked slots
+
+            const chip = document.createElement('button');
+            chip.className = 'time-slot';
+            chip.textContent = slot.time;
+            chip.addEventListener('click', () => {
+                // Determine actual datetime for calendar
+                handleBookingClick(date, slot);
+            });
+            slotsGrid.appendChild(chip);
         });
-        slotsGrid.appendChild(chip);
-    });
+    } catch (e) {
+        slotsGrid.innerHTML = '<p style="color:red">Error loading slots.</p>';
+    }
 
-    // Smooth scroll to slots
     timeSlotsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function generateMockSlots() {
-    // Generate hourly slots from 10:00 to 18:00
-    const times = [];
-    for (let h = 10; h <= 18; h++) {
-        times.push(`${h}:00 hs`);
-    }
-    return times;
+function handleBookingClick(date, slot) {
+    if (!confirm(`Book appointment for ${slot.time}?`)) return;
+
+    // 1. Mark as booked in DB
+    fetch(`${API_URL}/book/${slot.id}`, { method: 'POST' })
+        .then(res => {
+            if (res.ok) {
+                // 2. Open Google Calendar Link
+                const calendarUrl = generateGoogleCalendarLink(date, slot.time);
+                window.open(calendarUrl, '_blank');
+                alert('Booking confirmed! Opening Google Calendar...');
+                showTimeSlots(date); // Refresh UI
+            } else {
+                alert('Failed to book. It might be taken.');
+            }
+        });
 }
 
+function generateGoogleCalendarLink(dateObj, timeStr) {
+    // Construct Start/End Time in ISO format
+    // timeStr is "10:00"
+    const [hours, mins] = timeStr.split(':');
+
+    const start = new Date(dateObj);
+    start.setHours(parseInt(hours), parseInt(mins), 0);
+
+    const end = new Date(start);
+    end.setHours(start.getHours() + 1); // 1 hour duration
+
+    const fmt = (d) => d.toISOString().replace(/-|:|\.\d\d\d/g, ""); // Format: YYYYMMDDTHHMMSSZ
+
+    const title = encodeURIComponent("Turno Uñas - Glaze Studio");
+    const details = encodeURIComponent("Reserva confirmada en Glaze Studio.");
+    const location = encodeURIComponent("Glaze Studio");
+
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${fmt(start)}/${fmt(end)}&details=${details}&location=${location}`;
+}
+
+// Init function remains same
 init();
